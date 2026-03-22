@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>snap</title>
+		<link rel="stylesheet" href="popup.css">
+	</head>
+	<body>
+		<main>
+			<div class="topbar">
+				<div class="brand">
+					<div class="brand-badge" aria-hidden="true">
+						<svg viewBox="0 0 24 24" fill="none">
+							<path
+								d="M12 3.5C12.6 6.9 14.1 9.4 16.1 10.9C17.6 12 19.4 12.7 21 13
+								C17.7 13.6 15.2 15.1 13.7 17.1C12.6 18.6 11.9 20.4 11.6 22
+								C11 18.6 9.5 16.1 7.5 14.6C6 13.5 4.2 12.8 2.6 12.5
+								C5.9 11.9 8.4 10.4 9.9 8.4C11 6.9 11.7 5.1 12 3.5Z"
+								fill="currentColor"
+								/>
+						</svg>
+					</div>
+					<div class="brand-copy">
+						<h1 class="brand-title">snap</h1>
+						<p class="brand-subtitle">visible, region, or element capture.</p>
+					</div>
+				</div>
+				<button
+					id="themeToggle"
+					class="theme-toggle"
+					type="button"
+					aria-label="Toggle light and dark mode"
+					title="Toggle theme"
+					>
+					<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+						<path
+							d="M12 3V5.5M12 18.5V21M5.64 5.64L7.41 7.41M16.59 16.59L18.36 18.36M3 12H5.5M18.5 12H21M5.64 18.36L7.41 16.59M16.59 7.41L18.36 5.64M15.5 12A3.5 3.5 0 1 1 8.5 12A3.5 3.5 0 0 1 15.5 12Z"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							/>
+					</svg>
+				</button>
+			</div>
+			<div class="content">
+				<section class="panel">
+					<div class="panel-label">Capture</div>
+					<div class="feature-grid">
+						<button class="feature-button" data-mode="visible">Visible</button>
+						<button class="feature-button" data-mode="region">Region</button>
+						<button class="feature-button" data-mode="element">Element</button>
+					</div>
+				</section>
+				<section class="panel">
+					<div class="panel-label">Settings</div>
+					<div class="settings-list" id="settings">
+						<div class="setting-row">
+							<label for="highResolution">High Resolution</label>
+							<input
+								type="checkbox"
+								id="highResolution"
+								name="highResolution"
+								value="enableHighResolution"
+								checked
+								/>
+						</div>
+					</div>
+				</section>
+			</div>
+			<script src="popup.js" defer></script>
+		</main>
+	</body>
+</html>
