@@ -73,4 +73,4 @@ npm run test:coverage  # Run tests with coverage report
 
 ## License
 
-TBD
+[MIT](LICENSE)
