@@ -24,19 +24,19 @@ A chrome extension for taking screenshots directly in your browser. Capture what
 1. Navigate to any webpage
 2. Click the **snap** icon in your browser toolbar
 3. Choose a capture mode:
-   - **Visible** — Captures what's currently in your viewport
-   - **Region** — Click and drag to select an area of the page
-   - **Element** — Hover to highlight elements, click to capture one
+   - **Visible**: Captures what's currently in your viewport
+   - **Region**: Click and drag to select an area of the page
+   - **Element**: Hover to highlight elements, click to capture one
 4. Toggle **High Resolution** if you want a retina-quality image
 5. Click the mode button to start capture
 6. Enter a filename and press Enter (or click **Save PNG**)
 
 ## Tech Stack
 
-- **Chrome Extensions (Manifest V3)** — Runs as a browser extension with content scripts
-- **Vanilla JavaScript (ES modules)** — No framework dependencies; built with esbuild
-- **Shadow DOM** — UI components are encapsulated within shadow roots
-- **Chrome APIs** — `chrome.tabs.captureVisibleTab`, `chrome.downloads`, `chrome.storage.sync`
+- **Chrome Extensions (Manifest V3)**: Runs as a browser extension with content scripts
+- **Vanilla JavaScript (ES modules)**: No framework dependencies; built with esbuild
+- **Shadow DOM**: UI components are encapsulated within shadow roots
+- **Chrome APIs**: `chrome.tabs.captureVisibleTab`, `chrome.downloads`, `chrome.storage.sync`
 
 ## Project Structure
 
