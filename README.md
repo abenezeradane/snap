@@ -1,6 +1,6 @@
 # snap
 
-A Chrome extension for taking screenshots directly in your browser. Capture what's visible, select a region, or pick a specific element.
+A chrome extension for taking screenshots directly in your browser. Capture what's visible, select a region, or pick a specific element.
 
 ## Features
 
@@ -44,7 +44,7 @@ A Chrome extension for taking screenshots directly in your browser. Capture what
 src/
 ├── core/          # Shared utilities (errors, constants, logger)
 ├── capture/       # Capture orchestration and mode registry
-│   └── modes/    # Visible, element, and region capture logic
+│   └── modes/     # Visible, element, and region capture logic
 ├── ui/            # Popup, filename dialog, and overlay UI
 └── utils/         # DOM and image processing helpers
 
@@ -55,9 +55,9 @@ manifest.json      # Extension configuration
 ## Commands
 
 ```bash
-npm run build       # Production build → dist/content-script.js
-npm run watch       # Development build with watch mode
-npm test            # Run unit tests (Jest)
+npm run build          # Production build → dist/content-script.js
+npm run watch          # Development build with watch mode
+npm test               # Run unit tests (Jest)
 npm run test:coverage  # Run tests with coverage report
 ```
 
