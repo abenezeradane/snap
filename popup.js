@@ -43,17 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		btn.addEventListener("click", () => {
 			const mode = btn.dataset.mode;
 
-			chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-				chrome.scripting.executeScript({
-					target: { tabId: tabs[0].id },
-					files: ["dist/content-script.js"]
-				}, () => {
-					chrome.tabs.sendMessage(tabs[0].id, {
-						action: "capture",
-						mode: mode,
-						hiRes: hiResToggle.checked,
-					});
-				});
+			chrome.runtime.sendMessage({
+				action: "startCapture",
+				mode: mode,
+				hiRes: hiResToggle.checked,
+			}, () => {
+				window.close();
 			});
 		});
 	});

@@ -1,4 +1,24 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+	if (message.action === "startCapture") {
+		chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+			const tabId = tabs[0].id;
+
+			chrome.scripting.executeScript({
+				target: { tabId },
+				files: ["dist/content-script.js"]
+			}, () => {
+				chrome.tabs.sendMessage(tabId, {
+					action: "capture",
+					mode: message.mode,
+					hiRes: message.hiRes,
+				});
+			});
+		});
+
+		sendResponse({ ok: true });
+		return false;
+	}
+
 	if (message.action === "captureTab") {
 		chrome.tabs.captureVisibleTab(null, { format: "png" }, (dataUrl) => {
 			if (chrome.runtime.lastError) {
