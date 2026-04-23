@@ -4,7 +4,7 @@ import inlineImported from "esbuild-plugin-inline-import";
 const isWatch = process.argv.includes("--watch");
 
 const buildOptions = {
-	entryPoints: ["src/content-script.js"],
+	entryPoints: ["src/content-script.js", "src/popup.js"],
 	bundle: true,
 	outdir: "dist",
 	format: "iife",

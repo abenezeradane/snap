@@ -4,27 +4,16 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>snap</title>
+		<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 		<link rel="stylesheet" href="popup.css">
 	</head>
 	<body>
 		<main>
-			<div class="topbar">
+			<!-- Nav Glass -->
+			<header class="nav-glass">
 				<div class="brand">
-					<div class="brand-badge" aria-hidden="true">
-						<svg viewBox="0 0 24 24" fill="none">
-							<path
-								d="M12 3.5C12.6 6.9 14.1 9.4 16.1 10.9C17.6 12 19.4 12.7 21 13
-								C17.7 13.6 15.2 15.1 13.7 17.1C12.6 18.6 11.9 20.4 11.6 22
-								C11 18.6 9.5 16.1 7.5 14.6C6 13.5 4.2 12.8 2.6 12.5
-								C5.9 11.9 8.4 10.4 9.9 8.4C11 6.9 11.7 5.1 12 3.5Z"
-								fill="currentColor"
-								/>
-						</svg>
-					</div>
-					<div class="brand-copy">
-						<h1 class="brand-title">snap</h1>
-						<p class="brand-subtitle">visible, region, or element capture.</p>
-					</div>
+					<span class="material-symbols-outlined brand-icon" aria-hidden="true">photo_camera</span>
+					<span class="brand-name">snap</span>
 				</div>
 				<button
 					id="themeToggle"
@@ -33,31 +22,55 @@
 					aria-label="Toggle light and dark mode"
 					title="Toggle theme"
 					>
-					<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-						<path
-							d="M12 3V5.5M12 18.5V21M5.64 5.64L7.41 7.41M16.59 16.59L18.36 18.36M3 12H5.5M18.5 12H21M5.64 18.36L7.41 16.59M16.59 7.41L18.36 5.64M15.5 12A3.5 3.5 0 1 1 8.5 12A3.5 3.5 0 0 1 15.5 12Z"
-							stroke="currentColor"
-							stroke-width="1.8"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							/>
-					</svg>
+					<span class="material-symbols-outlined icon-sun" aria-hidden="true">light_mode</span>
+					<span class="material-symbols-outlined icon-moon" aria-hidden="true">dark_mode</span>
 				</button>
-			</div>
-			<div class="content">
-				<section class="panel">
-					<div class="panel-label">Capture</div>
-					<div class="feature-grid">
-						<button class="feature-button" data-mode="visible">Visible</button>
-						<button class="feature-button" data-mode="region">Region</button>
-						<button class="feature-button" data-mode="element">Element</button>
-					</div>
-				</section>
-				<section class="panel">
-					<div class="panel-label">Settings</div>
-					<div class="settings-list" id="settings">
-						<div class="setting-row">
+			</header>
+
+			<!-- Hero Section -->
+			<section class="hero">
+				<h1 class="hero-title">Snap what you see.</h1>
+				<p class="hero-subtitle">Screen, region, or element.</p>
+				<div class="capture-list">
+					<button class="capture-btn feature-button" data-mode="visible">
+						<span class="capture-btn-content">
+							<span class="capture-icon-badge">
+								<span class="material-symbols-outlined capture-icon" aria-hidden="true">desktop_windows</span>
+							</span>
+							<span class="capture-label">Visible Screen</span>
+						</span>
+						<span class="material-symbols-outlined capture-chevron" aria-hidden="true">arrow_forward_ios</span>
+					</button>
+					<button class="capture-btn feature-button" data-mode="region">
+						<span class="capture-btn-content">
+							<span class="capture-icon-badge">
+								<span class="material-symbols-outlined capture-icon" aria-hidden="true">crop</span>
+							</span>
+							<span class="capture-label">Selected Region</span>
+						</span>
+						<span class="material-symbols-outlined capture-chevron" aria-hidden="true">arrow_forward_ios</span>
+					</button>
+					<button class="capture-btn feature-button" data-mode="element">
+						<span class="capture-btn-content">
+							<span class="capture-icon-badge">
+								<span class="material-symbols-outlined capture-icon" aria-hidden="true">touch_app</span>
+							</span>
+							<span class="capture-label">Specific Element</span>
+						</span>
+						<span class="material-symbols-outlined capture-chevron" aria-hidden="true">arrow_forward_ios</span>
+					</button>
+				</div>
+			</section>
+
+			<!-- Settings Section -->
+			<section class="settings-section">
+				<div class="settings-card" id="settings">
+					<div class="setting-row">
+						<div class="setting-label">
+							<span class="material-symbols-outlined setting-icon" aria-hidden="true">high_quality</span>
 							<label for="highResolution">High Resolution</label>
+						</div>
+						<label class="toggle">
 							<input
 								type="checkbox"
 								id="highResolution"
@@ -65,11 +78,20 @@
 								value="enableHighResolution"
 								checked
 								/>
-						</div>
+							<span class="toggle-track">
+								<span class="toggle-thumb"></span>
+							</span>
+						</label>
 					</div>
-				</section>
-			</div>
-			<script src="popup.js" defer></script>
+				</div>
+				<div class="advanced-link-row">
+					<a href="#" class="advanced-link">
+						Advanced Settings
+						<span class="material-symbols-outlined advanced-link-icon" aria-hidden="true">chevron_right</span>
+					</a>
+				</div>
+			</section>
 		</main>
+		<script src="dist/popup.js" defer></script>
 	</body>
 </html>

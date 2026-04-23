@@ -1,13 +1,11 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	if (message.action === "startCapture") {
 		chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-			const tabId = tabs[0].id;
-
 			chrome.scripting.executeScript({
-				target: { tabId },
-				files: ["dist/content-script.js"]
+				target: { tabId: tabs[0].id },
+				files: ["dist/content-script.js"],
 			}, () => {
-				chrome.tabs.sendMessage(tabId, {
+				chrome.tabs.sendMessage(tabs[0].id, {
 					action: "capture",
 					mode: message.mode,
 					hiRes: message.hiRes,
