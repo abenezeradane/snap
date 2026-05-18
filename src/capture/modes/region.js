@@ -9,8 +9,8 @@ import {
 	preventPageScroll,
 	restorePageScroll,
 } from "../../ui/overlay.js";
-import { cropRegionCapture } from "../../utils/image.js";
-import { removeNode, sleep, getClientPoint, createViewportRect, isUsableSelection } from "../../utils/index.js";
+import { cropRegionCapture, writeImageToClipboard } from "../../utils/image.js";
+import { generateAutoFilename, removeNode, sleep, getClientPoint, createViewportRect, isUsableSelection } from "../../utils/index.js";
 
 export function createRegionCaptureMode({
 	captureClient,
@@ -19,7 +19,14 @@ export function createRegionCaptureMode({
 	win,
 	session,
 }) {
-	async function run({ highRes }) {
+	async function run({
+		highRes,
+		format = "png",
+		quality = 85,
+		delay = 0,
+		clipboard = false,
+		autoSave = false,
+	}) {
 		if (!session.acquire()) {
 			return;
 		}
@@ -30,6 +37,11 @@ export function createRegionCaptureMode({
 			doc,
 			win,
 			highRes,
+			format,
+			quality,
+			delay,
+			clipboard,
+			autoSave,
 		});
 
 		try {
@@ -49,6 +61,11 @@ function createRegionSelectionSession({
 	doc,
 	win,
 	highRes,
+	format = "png",
+	quality = 85,
+	delay = 0,
+	clipboard = false,
+	autoSave = false,
 }) {
 	let overlay = null;
 	let selectionBox = null;
@@ -214,9 +231,14 @@ function createRegionSelectionSession({
 	async function handleSave(event) {
 		event.stopPropagation();
 
-		const filename = await promptService.promptFilename();
-		if (!filename) {
-			return;
+		let filename;
+		if (autoSave) {
+			filename = generateAutoFilename(format);
+		} else {
+			filename = await promptService.promptFilename("screenshot", format);
+			if (!filename) {
+				return;
+			}
 		}
 
 		const rect = selectedRect;
@@ -235,16 +257,15 @@ function createRegionSelectionSession({
 
 		doc.removeEventListener("keydown", onKeyDown, true);
 
-		await sleep(50);
+		await sleep(50 + delay * 1000);
 
-		const dataUrl = await cropRegionCapture({
-			captureClient,
-			rect,
-			highRes,
-			win,
-		});
-
+		const dataUrl = await cropRegionCapture({ captureClient, rect, highRes, format, quality, win });
 		await captureClient.download(dataUrl, filename);
+
+		if (clipboard) {
+			await writeImageToClipboard(dataUrl);
+		}
+
 		finish();
 	}
 

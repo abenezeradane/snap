@@ -1,5 +1,14 @@
-import { createHighlightBox, updateHighlight, createConfirmOverlay, isPromptOpen, isInternalUiElement, preventPageScroll, restorePageScroll } from "../../ui/overlay.js";
-import { cropElementCapture } from "../../utils/image.js";
+import {
+	createHighlightBox,
+	updateHighlight,
+	createConfirmOverlay,
+	isPromptOpen,
+	isInternalUiElement,
+	preventPageScroll,
+	restorePageScroll,
+} from "../../ui/overlay.js";
+import { cropElementCapture, writeImageToClipboard } from "../../utils/image.js";
+import { generateAutoFilename } from "../../utils/index.js";
 import { removeNode, sleep } from "../../utils/dom.js";
 
 export function createElementCaptureMode({
@@ -9,7 +18,14 @@ export function createElementCaptureMode({
 	win,
 	session,
 }) {
-	async function run({ highRes }) {
+	async function run({
+		highRes,
+		format = "png",
+		quality = 85,
+		delay = 0,
+		clipboard = false,
+		autoSave = false,
+	}) {
 		if (!session.acquire()) {
 			return;
 		}
@@ -20,6 +36,11 @@ export function createElementCaptureMode({
 			doc,
 			win,
 			highRes,
+			format,
+			quality,
+			delay,
+			clipboard,
+			autoSave,
 		});
 
 		try {
@@ -39,6 +60,11 @@ function createElementSelectionSession({
 	doc,
 	win,
 	highRes,
+	format = "png",
+	quality = 85,
+	delay = 0,
+	clipboard = false,
+	autoSave = false,
 }) {
 	let currentTarget = null;
 	let selectedTarget = null;
@@ -178,9 +204,14 @@ function createElementSelectionSession({
 	async function handleSave(event) {
 		event.stopPropagation();
 
-		const filename = await promptService.promptFilename();
-		if (!filename) {
-			return;
+		let filename;
+		if (autoSave) {
+			filename = generateAutoFilename(format);
+		} else {
+			filename = await promptService.promptFilename("screenshot", format);
+			if (!filename) {
+				return;
+			}
 		}
 
 		const target = selectedTarget;
@@ -195,16 +226,15 @@ function createElementSelectionSession({
 		confirmOverlay = null;
 		highlight = null;
 
-		await sleep(50);
+		await sleep(50 + delay * 1000);
 
-		const dataUrl = await cropElementCapture({
-			captureClient,
-			element: target,
-			highRes,
-			win,
-		});
-
+		const dataUrl = await cropElementCapture({ captureClient, element: target, highRes, format, quality, win });
 		await captureClient.download(dataUrl, filename);
+
+		if (clipboard) {
+			await writeImageToClipboard(dataUrl);
+		}
+
 		finish();
 	}
 

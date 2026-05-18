@@ -47,7 +47,14 @@ export function createScreenshotApp({
 			return;
 		}
 
-		void runMode(mode, { highRes: Boolean(message.hiRes) });
+		void runMode(mode, {
+			highRes: Boolean(message.hiRes),
+			format: message.format || "png",
+			quality: message.quality ?? 85,
+			delay: message.delay ?? 0,
+			clipboard: Boolean(message.clipboard),
+			autoSave: Boolean(message.autoSave),
+		});
 	}
 
 	async function runMode(mode, options) {

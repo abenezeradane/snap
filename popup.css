@@ -28,7 +28,16 @@
 	--toggle-on: #34c759;
 	--link-color: #0066cc;
 
+	/* Segmented controls */
+	--seg-bg: rgba(0, 0, 0, 0.06);
+	--seg-active: #ffffff;
+	--seg-active-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 1px rgba(0, 0, 0, 0.06);
+
 	--focus-ring: #0071e3;
+
+	/* Tooltips */
+	--tooltip-bg: rgba(29, 29, 31, 0.92);
+	--tooltip-text: #f5f5f7;
 }
 
 /* ===== Dark Mode — sections invert ===== */
@@ -59,6 +68,15 @@ html[data-theme="dark"] {
 	--card-shadow: rgba(0, 0, 0, 0.5) 3px 5px 30px 0px;
 	--toggle-off: #3a3a3c;
 	--link-color: #2997ff;
+
+	/* Segmented controls */
+	--seg-bg: rgba(255, 255, 255, 0.08);
+	--seg-active: rgba(255, 255, 255, 0.18);
+	--seg-active-shadow: none;
+
+	/* Tooltips */
+	--tooltip-bg: rgba(249, 249, 250, 0.94);
+	--tooltip-text: #1d1d1f;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -82,6 +100,11 @@ html[data-theme="dark"] {
 		--card-shadow: rgba(0, 0, 0, 0.5) 3px 5px 30px 0px;
 		--toggle-off: #3a3a3c;
 		--link-color: #2997ff;
+		--seg-bg: rgba(255, 255, 255, 0.08);
+		--seg-active: rgba(255, 255, 255, 0.18);
+		--seg-active-shadow: none;
+		--tooltip-bg: rgba(249, 249, 250, 0.94);
+		--tooltip-text: #1d1d1f;
 	}
 }
 
@@ -95,6 +118,7 @@ html[data-theme="dark"] {
 /* ===== Base ===== */
 html, body {
 	width: 340px;
+	overscroll-behavior: none;
 }
 
 body {
@@ -349,7 +373,6 @@ html[data-theme="dark"] .icon-moon { display: none; }
 	padding: 16px;
 	box-shadow: var(--card-shadow);
 	position: relative;
-	overflow: hidden;
 }
 
 .settings-card::before {
@@ -369,6 +392,7 @@ html[data-theme="dark"] .icon-moon { display: none; }
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	gap: 12px;
 }
 
 .setting-label {
@@ -445,42 +469,213 @@ html[data-theme="dark"] .icon-moon { display: none; }
 	outline-offset: 2px;
 }
 
-/* ===== Advanced Link ===== */
-.advanced-link-row {
+/* ===== Advanced Toggle ===== */
+.advanced-toggle {
+	appearance: none;
+	background: none;
+	border: none;
+	cursor: pointer;
 	display: flex;
-	justify-content: center;
-	padding: 16px 0;
-}
-
-.advanced-link {
-	display: inline-flex;
 	align-items: center;
+	justify-content: center;
 	gap: 2px;
+	width: 100%;
+	padding: 14px 0;
+	font-family: inherit;
 	font-size: 14px;
 	font-weight: 400;
 	line-height: 1.43;
 	letter-spacing: -0.224px;
 	color: var(--link-color);
-	text-decoration: none;
+	transition: opacity 0.15s ease;
 }
 
-.advanced-link:hover {
-	text-decoration: underline;
-	text-underline-offset: 2px;
-	text-decoration-thickness: 1px;
+.advanced-toggle:hover {
+	opacity: 0.7;
 }
 
-@keyframes chevron-nudge {
-	0%, 100% { transform: translateX(0); }
-	40%       { transform: translateX(3px); }
+.advanced-toggle:focus-visible {
+	outline: 2px solid var(--focus-ring);
+	outline-offset: 2px;
+	border-radius: 4px;
 }
 
-.advanced-link:hover .advanced-link-icon {
-	animation: chevron-nudge 0.5s ease;
-}
-
-.advanced-link-icon {
-	font-size: 12px;
+.advanced-toggle-icon {
+	font-size: 16px;
 	line-height: 1;
-	flex-shrink: 0;
+}
+
+/* ===== Advanced Panel (accordion) ===== */
+.advanced-panel {
+	height: 0;
+	overflow: hidden;
+}
+
+.advanced-panel-inner {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	padding-bottom: 16px;
+}
+
+/* ===== Setting Row Label (plain text, no icon) ===== */
+.setting-row-label {
+	font-size: 17px;
+	font-weight: 400;
+	line-height: 1.47;
+	letter-spacing: -0.374px;
+	color: var(--card-text);
+	white-space: nowrap;
+}
+
+/* ===== Segmented Control ===== */
+.segmented-control {
+	display: flex;
+	position: relative;
+	background: var(--seg-bg);
+	border-radius: 9px;
+	padding: 2px;
+	gap: 2px;
+}
+
+.seg-pill {
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	height: calc(100% - 4px);
+	border-radius: 7px;
+	background: var(--seg-active);
+	box-shadow: var(--seg-active-shadow);
+	pointer-events: none;
+	z-index: 0;
+	opacity: 0;
+}
+
+.seg-btn {
+	appearance: none;
+	border: none;
+	background: transparent;
+	color: var(--card-text);
+	font-family: inherit;
+	font-size: 12px;
+	font-weight: 500;
+	letter-spacing: -0.12px;
+	line-height: 1.33;
+	padding: 5px 9px;
+	border-radius: 7px;
+	cursor: pointer;
+	white-space: nowrap;
+	position: relative;
+	z-index: 1;
+	transition: color 0.15s ease;
+}
+
+.seg-btn.active {
+	background: transparent;
+	box-shadow: none;
+}
+
+.seg-btn:focus-visible {
+	outline: 2px solid var(--focus-ring);
+	outline-offset: 1px;
+}
+
+/* ===== Quality Slider ===== */
+.quality-row {
+	display: none;
+	align-items: center;
+}
+
+.quality-control {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex: 1;
+	min-width: 0;
+}
+
+.quality-slider {
+	-webkit-appearance: none;
+	appearance: none;
+	flex: 1;
+	min-width: 0;
+	height: 4px;
+	border-radius: 2px;
+	background: linear-gradient(
+		to right,
+		#0071e3 0%,
+		#0071e3 var(--fill, 62.5%),
+		var(--seg-bg) var(--fill, 62.5%),
+		var(--seg-bg) 100%
+	);
+	outline: none;
+	cursor: pointer;
+}
+
+.quality-slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	background: #0071e3;
+	cursor: pointer;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24);
+}
+
+.quality-slider:focus-visible {
+	outline: 2px solid var(--focus-ring);
+	outline-offset: 3px;
+}
+
+.quality-value {
+	font-size: 12px;
+	font-weight: 500;
+	letter-spacing: -0.12px;
+	color: var(--card-text);
+	min-width: 30px;
+	text-align: right;
+	opacity: 0.7;
+}
+
+/* ===== Advanced Divider ===== */
+.advanced-divider {
+	height: 1px;
+	background: color-mix(in srgb, var(--card-text) 10%, transparent);
+	margin: 0;
+}
+
+/* ===== Tooltips ===== */
+[data-tooltip] {
+	position: relative;
+}
+
+[data-tooltip]::after {
+	content: attr(data-tooltip);
+	position: absolute;
+	bottom: calc(100% + 8px);
+	left: 0;
+	width: max-content;
+	max-width: 220px;
+	padding: 7px 10px;
+	border-radius: 7px;
+	background: var(--tooltip-bg);
+	backdrop-filter: blur(12px) saturate(1.4);
+	-webkit-backdrop-filter: blur(12px) saturate(1.4);
+	color: var(--tooltip-text);
+	font-size: 11px;
+	font-weight: 400;
+	line-height: 1.5;
+	letter-spacing: -0.06px;
+	white-space: normal;
+	pointer-events: none;
+	z-index: 200;
+	opacity: 0;
+	transform: translateY(3px);
+	transition: opacity 0.1s ease, transform 0.1s ease;
+}
+
+[data-tooltip]:hover::after {
+	opacity: 1;
+	transform: translateY(0);
+	transition: opacity 0.2s ease 0.5s, transform 0.2s ease 0.5s;
 }

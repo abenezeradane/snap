@@ -64,7 +64,7 @@ export function createPromptService({
 			"light";
 	}
 
-	function promptFilename(defaultName = "screenshot") {
+	function promptFilename(defaultName = "screenshot", format = "png") {
 		return resolveTheme().then((theme) => {
 			return new Promise((resolve) => {
 				const host = doc.createElement("div");
@@ -79,7 +79,7 @@ export function createPromptService({
 				const shadow = host.attachShadow({ mode: "open" });
 				const tokens = THEME_TOKENS[theme];
 
-				shadow.innerHTML = buildPromptTemplate(tokens);
+				shadow.innerHTML = buildPromptTemplate(tokens, format);
 
 				const root = shadow.querySelector(".snap-root");
 				const backdrop = shadow.querySelector(".snap-backdrop");
@@ -111,7 +111,7 @@ export function createPromptService({
 				}
 
 				function submit() {
-					close(normalizeFilename(input.value));
+					close(normalizeFilename(input.value, format));
 				}
 
 				function stopPropagation(event) {
@@ -202,7 +202,7 @@ function removeNode(node) {
 	}
 }
 
-function buildPromptTemplate(tokens) {
+function buildPromptTemplate(tokens, format = "png") {
 	return `
 		<style>
 			:host { all: initial; }
@@ -414,7 +414,7 @@ function buildPromptTemplate(tokens) {
 							<span class="snap-label">Filename</span>
 							<div class="snap-input-wrap">
 								<input class="snap-input" type="text" autocomplete="off" spellcheck="false"/>
-								<div class="snap-suffix">.png</div>
+								<div class="snap-suffix">.${format}</div>
 							</div>
 						</label>
 						<div class="snap-footer">

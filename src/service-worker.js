@@ -9,6 +9,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 					action: "capture",
 					mode: message.mode,
 					hiRes: message.hiRes,
+					format: message.format,
+					quality: message.quality,
+					delay: message.delay,
+					clipboard: message.clipboard,
+					autoSave: message.autoSave,
 				});
 			});
 		});

@@ -63,9 +63,9 @@
 			</section>
 
 			<!-- Settings Section -->
-			<section class="settings-section">
-				<div class="settings-card" id="settings">
-					<div class="setting-row">
+			<section class="settings-section" id="settings">
+				<div class="settings-card">
+					<div class="setting-row" data-tooltip="Capture at your display's full pixel density — ideal for HiDPI and Retina screens.">
 						<div class="setting-label">
 							<span class="material-symbols-outlined setting-icon" aria-hidden="true">high_quality</span>
 							<label for="highResolution">High Resolution</label>
@@ -84,11 +84,95 @@
 						</label>
 					</div>
 				</div>
-				<div class="advanced-link-row">
-					<a href="#" class="advanced-link">
-						Advanced Settings
-						<span class="material-symbols-outlined advanced-link-icon" aria-hidden="true">chevron_right</span>
-					</a>
+
+				<!-- Accordion trigger -->
+				<button
+					class="advanced-toggle"
+					id="advancedToggle"
+					type="button"
+					aria-expanded="false"
+					aria-controls="advancedPanel"
+					>
+					Advanced Settings
+					<span class="material-symbols-outlined advanced-toggle-icon" aria-hidden="true">expand_more</span>
+				</button>
+
+				<!-- Expandable panel -->
+				<div class="advanced-panel" id="advancedPanel" role="region" aria-labelledby="advancedToggle">
+					<div class="advanced-panel-inner">
+
+						<!-- Format -->
+						<div class="setting-row" data-tooltip="Output format. PNG is lossless; JPEG and WebP are compressed lossy formats.">
+							<span class="setting-row-label">Format</span>
+							<div class="segmented-control" id="imageFormatControl" role="group" aria-label="Image format">
+							<div class="seg-pill" aria-hidden="true"></div>
+								<button class="seg-btn" data-value="png" type="button">PNG</button>
+								<button class="seg-btn" data-value="jpeg" type="button">JPEG</button>
+								<button class="seg-btn" data-value="webp" type="button">WebP</button>
+							</div>
+						</div>
+
+						<!-- JPEG / WebP Quality (conditional) -->
+						<div class="setting-row quality-row" id="qualityRow" data-tooltip="Compression level for JPEG and WebP. Lower values mean smaller files.">
+							<label class="setting-row-label" for="jpegQuality">Quality</label>
+							<div class="quality-control">
+								<input
+									type="range"
+									id="jpegQuality"
+									name="jpegQuality"
+									class="quality-slider"
+									min="60"
+									max="100"
+									step="5"
+									value="85"
+									/>
+								<span class="quality-value" id="qualityValue">85%</span>
+							</div>
+						</div>
+
+						<!-- Delay -->
+						<div class="setting-row" data-tooltip="Pause before capturing — handy for hover states, tooltips, and open menus.">
+							<span class="setting-row-label">Delay</span>
+							<div class="segmented-control" id="captureDelayControl" role="group" aria-label="Capture delay">
+							<div class="seg-pill" aria-hidden="true"></div>
+								<button class="seg-btn" data-value="0" type="button">None</button>
+								<button class="seg-btn" data-value="2" type="button">2s</button>
+								<button class="seg-btn" data-value="3" type="button">3s</button>
+								<button class="seg-btn" data-value="5" type="button">5s</button>
+							</div>
+						</div>
+
+						<div class="advanced-divider"></div>
+
+						<!-- Copy to Clipboard -->
+						<div class="setting-row" data-tooltip="Also copy the captured image to your clipboard after saving.">
+							<div class="setting-label">
+								<span class="material-symbols-outlined setting-icon" aria-hidden="true">content_paste</span>
+								<label for="copyToClipboard">Copy to Clipboard</label>
+							</div>
+							<label class="toggle">
+								<input type="checkbox" id="copyToClipboard" name="copyToClipboard" />
+								<span class="toggle-track">
+									<span class="toggle-thumb"></span>
+								</span>
+							</label>
+						</div>
+
+						<!-- Auto-save -->
+						<div class="setting-row" data-tooltip="Skip the filename prompt and save instantly with an auto-generated timestamp.">
+							<div class="setting-label">
+								<span class="material-symbols-outlined setting-icon" aria-hidden="true">timer</span>
+								<label for="autoSave">Auto-save</label>
+							</div>
+							<label class="toggle">
+								<input type="checkbox" id="autoSave" name="autoSave" />
+								<span class="toggle-track">
+									<span class="toggle-thumb"></span>
+								</span>
+							</label>
+						</div>
+
+					</div>
 				</div>
 			</section>
 		</main>

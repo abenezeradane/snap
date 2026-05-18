@@ -19,10 +19,22 @@ export function getCanvasContext(canvas) {
 	return context;
 }
 
-export function scaleCapturedImage({
-	dataUrl,
-	highRes
-}) {
+function canvasToDataUrl(canvas, format = "png", quality = 85) {
+	if (format === "jpeg") return canvas.toDataURL("image/jpeg", quality / 100);
+	if (format === "webp") return canvas.toDataURL("image/webp", quality / 100);
+	return canvas.toDataURL("image/png");
+}
+
+export async function writeImageToClipboard(dataUrl) {
+	try {
+		const blob = await fetch(dataUrl).then((r) => r.blob());
+		await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+	} catch {
+		// Best-effort; clipboard access may not be available in all contexts.
+	}
+}
+
+export function scaleCapturedImage({ dataUrl, highRes, format = "png", quality = 85 }) {
 	return loadImage(dataUrl).then((image) => {
 		const scale = highRes ? 1 : 1 / (window.devicePixelRatio || 1);
 		const canvas = document.createElement("canvas");
@@ -32,16 +44,11 @@ export function scaleCapturedImage({
 		canvas.height = Math.max(1, Math.round(image.height * scale));
 
 		context.drawImage(image, 0, 0, canvas.width, canvas.height);
-		return canvas.toDataURL("image/png");
+		return canvasToDataUrl(canvas, format, quality);
 	});
 }
 
-export function cropRegionCapture({
-	captureClient,
-	rect,
-	highRes,
-	win,
-}) {
+export function cropRegionCapture({ captureClient, rect, highRes, format = "png", quality = 85, win }) {
 	return captureClient.requestTabCapture()
 		.then(loadImage)
 		.then((image) => {
@@ -67,16 +74,11 @@ export function cropRegionCapture({
 				canvas.height,
 			);
 
-			return canvas.toDataURL("image/png");
+			return canvasToDataUrl(canvas, format, quality);
 		});
 }
 
-export function cropElementCapture({
-	captureClient,
-	element,
-	highRes,
-	win,
-}) {
+export function cropElementCapture({ captureClient, element, highRes, format = "png", quality = 85, win }) {
 	const rect = element.getBoundingClientRect();
 	return captureClient.requestTabCapture()
 		.then(loadImage)
@@ -103,6 +105,6 @@ export function cropElementCapture({
 				canvas.height,
 			);
 
-			return canvas.toDataURL("image/png");
+			return canvasToDataUrl(canvas, format, quality);
 		});
 }

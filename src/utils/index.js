@@ -1,14 +1,23 @@
 export * from "./dom.js";
 export * from "./image.js";
 
-export function normalizeFilename(value) {
+export function normalizeFilename(value, format = "png") {
+	const ext = `.${format}`;
 	const baseName = (value || "").trim() || "screenshot";
 	const sanitized = baseName
 		.replace(/[<>:"/\\|?*\u0000-\u001F]/g, "-")
 		.replace(/\.+$/g, "")
 		.slice(0, 200);
+	const withoutExt = sanitized.replace(/\.(png|jpe?g|webp)$/i, "");
+	return `${withoutExt}${ext}`;
+}
 
-	return sanitized.endsWith(".png") ? sanitized : `${sanitized}.png`;
+export function generateAutoFilename(format = "png") {
+	const now = new Date();
+	const pad = (n) => String(n).padStart(2, "0");
+	const date = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+	const time = `${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+	return `snap-${date}-${time}.${format}`;
 }
 
 export function getClientPoint(event) {
